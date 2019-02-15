@@ -1,0 +1,23 @@
+<nav>
+  <h1>Hi.</h1>
+  <a href="/">
+    {% if site.data.theme.social.gravatar %}
+    <img src="http://www.gravatar.com/avatar/{{ site.data.theme.social.gravatar }}?s=200" id="gravatar" alt="My photo"/>
+    {% else %}
+    <img src="/logo.png" id="logo" alt="Blog logo" height="100px" width="100px"/>
+    {% endif %}
+  </a>
+  <h2>I'm <a href="/">{{ site.data.theme.name }}</a>.</h2>
+  <div id="bio">
+    <p>This is my personal website where I share things sometimes in English, sometimes in French.</p>
+    <p>
+      <a href="mailto:romain@taprest.fr"><i class="fas fa-envelope-square"></i>
+      Write to me</a> encrypted ! 
+      Copy my <a href="https://pgp.surfnet.nl/pks/lookup?op=get&search=0x611E9946C82A3595">
+      <i class="fas fa-key"></i>public key</a>.
+    </p>
+  </div>
+  <div id="social">
+    {% include social.html %}
+  </div>
+</nav>
