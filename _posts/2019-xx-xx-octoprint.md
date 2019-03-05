@@ -25,19 +25,19 @@ Here is a picture to summarize my setup. Every part of it is detailed in the nex
 
 Here is all the hardware I am using:
 
-* **3D printer MicroDelta Rework from [RepRap France](https://www.reprap-france.com/)**
+* **3D printer MicroDelta Rework from [RepRap France](https://www.reprap-france.com/)**  
   I bought this a few years ago and it works great. 
   It cost 400€ as a kit to mount myself.
   It has a USB port to control it with a computer.
-* **Raspberry Pi 3 B+**
+* **Raspberry Pi 3 B+**  
   At this date, some full kits can be found for 60€ with a power supply, a casing and 
   an SD card. What is great with version 3B is the integrated WiFi, no need for a dongle!
   This micro-computer is more than enough to run all the software I needed, in fact 
   a Raspberry Pi 1 works fine as well.
-* **Webcam**
+* **Webcam**  
   Any webcam supporting [Motion JPG](https://en.wikipedia.org/wiki/Motion_JPEG) are fine
   to be used with Octoprint.
-* **Freebox mini**
+* **Freebox mini**  
   My Internet service provider is "Free" and provides me with a router (also doing modem). 
   This is what I use to connect my local network to the outside world.
 
@@ -84,7 +84,9 @@ In my case, `/dev/serial1` appears when I connect it.
 
 ## Step 4: Connect the Pi to the outside world
 
-### Make the RPI visible
+### Secure the Raspberry Pi
+
+### Port redirection
 
 ### Redirect domain name to my home
 
