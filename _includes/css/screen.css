@@ -115,6 +115,10 @@ nav h1, nav h2 {
   padding-top: 15px;
 }
 
+#bio p {
+  text-align: left;
+}
+
 #social {
   margin-bottom: 10px;
   font-size: 13px;
@@ -205,6 +209,7 @@ nav h1, nav h2 {
   width: 29px;
   overflow: hidden;
   float: left;
+  font-weight: normal;
 }
 
 #stalker i {
