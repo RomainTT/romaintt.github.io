@@ -1,7 +1,7 @@
 ---
 title: "Controlling my 3D printer from the internet"
 description: "How I control my 3D printer from anywhere in a secure way."
-date: 2019-xx-xx
+date: 2019-03-21
 layout: post
 categories: raspberry 3d-printing
 language: english
@@ -111,15 +111,29 @@ The port of the server was displayed in the console after
 this command. By default it is 5000.
 
 The rest of the configuration happened on the web interface
-of Octoprint, which is pretty clear. I made sure to make a 
+of Octoprint, which was pretty clear. I made sure to make a 
 user account on this interface with a strong password, and
 only authorized authenticated users to use the printer.
 
-TODO: plugins ? Timezone ? Else ?
+Here are some configurations requiring a special care:
+* Printer profiles, to configure several parameters about 
+  the printer like its shape, size, heatbed, etc.
+* Temperature profiles, to save preferred temperature to do 
+  some pre-heatings.
+* Webcam orientation.
+* Path to the serial port of the printer.
 
 ### Test with the printer
 
-TODO: baudrate ? buttons ?
+I let serial port and baudrate as "AUTO", and just click on connect. 
+Once the connection established, it was pleasing to move the printer 
+using the buttons of the web interface.
+
+![octoprint interface](/images/octoprint/octoprint_main.png)
+
+Since then, it is very simple to upload a file and print it.
+
+![octoprint files](/images/octoprint/octoprint_files.png)
 
 ## Step 4: Connect the Pi to the outside world
 
@@ -188,7 +202,7 @@ Raspberry Pi using SSH. Afterwards, I access the website of octoprint through
 that tunnel, which encrypts everything. More information about this technique
 can be found on [the website of SSH](https://www.ssh.com/ssh/tunneling/).
 
-![ssh tunneling image](images/octoprint/ssh-tunneling.png)
+![ssh tunneling image](/images/octoprint/ssh-tunneling.png)
 
 To do so, I kept the port redirection of the SSH connection as I explained in
 the previous section of this article, and configured nothing else !
@@ -206,7 +220,7 @@ which, in my case, can be for instance:
 
 After the connection is established, I can access the Octoprint interface on my
 browser by reaching the address `localhost:8080`, which is tunneled to the port
-80 of the Raspberry Pi.
+5000 of the Raspberry Pi.
 
 On **Windows**, I use [Putty](https://putty.org/) to establish the tunnel
 (there is a dedicated menu for this functionality). And the rest is all the
