@@ -100,14 +100,18 @@ Here is the configuration file of my daemon to backup files from Nextcloud:
 # /home/pi/.rsync/nextcloud_rsyncd.conf
 
 log file = /home/pi/.rsync/nextcloud_backup.log
-read only = true  # to avoid a compromised backup server to harm the main server.
+# to avoid a compromised backup server to harm the main server.
+read only = true
 exclude = lost+found/
-fake super = yes  # important to keep users and groups of files untouched 
-use chroot = no  # important or else it tries to chroot to path and fails because not root
+# important to keep users and groups of files untouched
+fake super = yes
+# important or else it tries to chroot to path and fails because not root
+use chroot = no
 
 [nextcloud_install]
 comment = Files of the Nextcloud server installation. Does not contain user data.
-path = /var/www/html/nextcloud  # user 'pi' must have read access on this directory!
+# user 'pi' must have read access on this directory!
+path = /var/www/html/nextcloud
 
 [nextcloud_data]
 comment = Data files of the Nextcloud server, including the database.
