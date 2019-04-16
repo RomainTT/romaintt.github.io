@@ -21,7 +21,7 @@ social:
 # "Hi, I'm _______"
 name: Romain Taprest
 email: romain@taprest.fr
-tagline: "weak opinions, strongly held"
+tagline: ""
 
 # Toggle "Postings are my own" disclaimer in footer
 show_disclaimer: false
