@@ -171,14 +171,16 @@ server. Two commands: one for the Nextcloud installation directory, and one for
 data:
 
 ```shell
-rsync -a -v -e "ssh -i ~/.ssh/id_rsa_nextcloud" pi@main_server_address::nextcloud_install backup/nextcloud_install
-rsync -a -v -e "ssh -i ~/.ssh/id_rsa_nextcloud" pi@main_server_address::nextcloud_data backup/nextcloud_data
+rsync -a -v --delete -e "ssh -i ~/.ssh/id_rsa_nextcloud" pi@main_server_address::nextcloud_install backup/nextcloud_install
+rsync -a -v --delete -e "ssh -i ~/.ssh/id_rsa_nextcloud" pi@main_server_address::nextcloud_data backup/nextcloud_data
 ```
 
 - The `-a` option is used to preserve the ownership of the files.
 - The `-v` to make the command verbose.
 - The `-e` to precise to use rsync over SSH with a given identity and SSH
   user name.
+- The `--delete` tells rsync to delete files on destination if they have 
+  been deleted on source.
 
 Attention: there are two usernames used here — ssh and rsync usernames:
 
@@ -198,7 +200,34 @@ What I want is to run the commands written above periodically, like once
 a week for instance. The use of [`cron`](https://en.wikipedia.org/wiki/Cron) 
 is well-suited in this case.
 
-I will detail the implementation if I have time later.
+First, user `pi` must not be in `/etc/cron.deny` and must be in `/etc/cron.allow`.
+
+Then, the crontab must be edited with the command `crontab -e`. I am creating a
+job that will run a custom script every monday at 1 A.M.
+
+```
+00 01 * * mon pi do_cloud_backup.sh >> backup_cron.log
+```
+
+And here is the content of this script:
+
+```shell
+#!/bin/bash
+
+rsync -a -v --delete -e "ssh -i ~/.ssh/id_rsa_nextcloud" pi@main_server_address::nextcloud_install backup/nextcloud_install
+rsync -a -v --delete -e "ssh -i ~/.ssh/id_rsa_nextcloud" pi@main_server_address::nextcloud_data backup/nextcloud_data
+```
+
+This is a good place to talk about the threat of **ransomwares**. In case my data
+becomes encrypted on the main server because of such a malware, my backup server
+would copy these encrypted files and I would lose my data anyway! I am not an 
+expert and I don’t know the best solutions to prevent this effect, but I have
+a very simple idea. I could write a dummy text file with a known content in the
+data directory of the main server. Then, I add a check of this file in the bash
+script of the `cron` job, before running the `rsync` commands. I could for
+instance create a new `rsync` module that copies only this dummy file. If this 
+file has a correct content I can assume that the rest of my data has not been
+corrupted, and synchronize the other modules.
 
 ## In case of...
 
