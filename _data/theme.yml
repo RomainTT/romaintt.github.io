@@ -5,18 +5,18 @@ highlight_color: '#db3445' #'#3498db'
 
 # Profile links on the left sidebar, leave blank to ignore
 social:
-  github: romaintt 
-  #bitbucket: 
-  # hacker_news: 
-  #stackexchange: 
+  github: romaintt
+  #bitbucket:
+  # hacker_news:
+  #stackexchange:
   stackoverflow: 5152114
-  # twitter: 
-  #facebook: 
+  # twitter:
+  #facebook:
   #tumblr:
-  linkedin: romaintaprest 
-  #gplus: 
-  #gravatar: 
-  #flickr: 
+  linkedin: romaintaprest
+  #gplus:
+  #gravatar:
+  #flickr:
 
 # "Hi, I'm _______"
 name: Romain Taprest
