@@ -3,3 +3,4 @@ highlighter: rouge
 url: romain.taprest.fr 
 lsi: false
 exclude: [LICENSE, CNAME, README.md, .gitignore, Gemfile, Gemfile.lock, vendor]
+permalink: /posts/:year/:month/:title
