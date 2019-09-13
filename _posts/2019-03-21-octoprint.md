@@ -3,8 +3,9 @@ title: "Controlling my 3D printer from the internet"
 description: "How I control my 3D printer from anywhere in a secure way."
 date: 2019-03-21
 layout: post
-categories: raspberry 3d-printing
-language: english
+keywords: raspberry 3d-printing octoprint reprap
+category: 3d-printing
+language: en_US
 ---
 
 So I have this 3D printer which is awesome and I have some new ideas of things to print 

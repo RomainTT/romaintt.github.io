@@ -3,8 +3,9 @@ title: "Messagease: mon clavier sur smartphone."
 description: "Présentation du clavier virtuel que j’utilise sur smartphone."
 date: 2019-08-01
 layout: post
-categories: keyboard
-language: français
+keywords: keyboard smartphone android messagease
+category: tech
+language: fr_FR
 ---
 
 Dans cet article je vais vous présenter le clavier virtuel que j’utilise sur mon
