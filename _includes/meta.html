@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <meta property="og:site_name" content="{{ site.title }}" />
-<meta name="author" content="{{ site.date.theme.name }}" />
+<meta name="author" content="{{ site.data.theme.name }}" />
 
 {% if site.description %}
   <meta name="description" content="{{ site.description }}" />
@@ -31,6 +31,6 @@
 {% endif %}
 
 {% if page.keywords %}
-  {% set pkeywords = page.keywords.split(" ") %}
+  {% assign pkeywords = page.keywords | split: " " %}
   <meta name="keywords" content="{% for kw in pkeywords %}{{ kw }} {% endfor %}" />
 {% endif %}
