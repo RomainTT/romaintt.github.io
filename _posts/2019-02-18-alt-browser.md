@@ -2,9 +2,10 @@
 title: "Mon alternative: pour le navigateur web"
 description: "Mon alternative du moment pour le navigateur web."
 date: 2019-02-18
-categories: privacy alternative
+keywords: privacy alternative browser software brave
+categories: tech
 layout: post
-language: french
+language: fr_FR
 ---
 
 *Ceci est un article présentant un service/outil que j’utilise comme alternative

@@ -3,8 +3,9 @@ title: "How I make backups of my Nextcloud server"
 description: "My setup based on rsync to make backups of my personal cloud."
 date: 2019-04-15
 layout: post
-categories: privacy raspberry 
-language: english
+keywords: privacy raspberry nextcloud backup security data
+categories: tech
+language: en_US
 ---
 ## Introduction
 
