@@ -126,10 +126,13 @@ data files of all users of Nextcloud, including the database of Nextcloud.
 This allows the backup servers to save these directories into different
 locations and at different periods for instance.
 
-The daemon will be run from user `pi`. To give this user read access to
-Nextcloud files, `pi` has been added to the group `www-data`. In this way
-`pi` user cannot write anything in Nextcloud directories, even without the
-option `read only`: double security!
+The daemon will be run from user `pi` (because the SSH connection is made with
+this user). To give this user read access to Nextcloud files, `pi` has been
+added to the group `www-data`. In this way `pi` user cannot write anything in
+Nextcloud directories, even without the option `read only`: double security!
+
+One could also create and use a dedicated user for the backup tasks, avoiding to
+use the very common user `pi` known by every malware…
 
 ### Configure the SSH connection
 
@@ -140,10 +143,16 @@ main server so that it can connect to it without giving a password.
 First, I need to generate a ssh key pair on the backup server:
 
 ```shell
-ssh-keygen -b 256 -t rsa -N my_passphrase -f ~/.ssh/id_rsa_nextcloud
+ssh-keygen -b 256 -t rsa -N "" -f ~/.ssh/id_rsa_nextcloud
 ```
 
 And copy the content of `~/.ssh/id_rsa_nextcloud.pub` for the next step.
+
+Note that I do not use a passphrase for this key (option `-N`), as I need it to
+be used automatically by a routine task, without a passphrase prompt. Because of
+that the key-pair is stored in plain-text and therefore can be used directly if
+stolen. But our safeguard is to restrict the powers of this key to the very
+minimum: read my data.
 
 On the main server containing Nextcloud, I add this public key to the list
 of authorized keys with a **forced command**. A forced command ensures that
@@ -224,6 +233,10 @@ rsync -a -v --delete -e "ssh -i ~/.ssh/id_rsa_nextcloud" pi@main_server_address:
 rsync -a -v --delete -e "ssh -i ~/.ssh/id_rsa_nextcloud" pi@main_server_address::nextcloud_data backup/nextcloud_data
 ```
 
+## In case of...
+
+### Ransomwares
+
 This is a good place to talk about the threat of **ransomwares**. In case my data
 becomes encrypted on the main server because of such a malware, my backup server
 would copy these encrypted files and I would lose my data anyway! I am not an 
@@ -235,7 +248,19 @@ instance create a new `rsync` module that copies only this dummy file. If this
 file has a correct content I can assume that the rest of my data has not been
 corrupted, and synchronize the other modules.
 
-## In case of...
+### Stealing of the backup SSH key
+
+If someone can compromise one of my backup servers:
+- He can access my backuped data. But it cannot have any impact on the original
+  data on the main server, even if he overwrites the backup.
+- He has the private key. Again, as the connection is limited, he can only read
+  data on the main server. But another threat is DDOS, bandwidth flooding, by
+  repeatedly executing the backup command. To counter that, I set a safeguard
+  on the main server to prevent this kind of behaviour by limiting the
+  connection rate.
+
+If one does not want his data to be read at all, the solution is to make
+NextCloud encrypt all data in the first place.
 
 ### Loss of the backup server
 
