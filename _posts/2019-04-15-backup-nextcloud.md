@@ -16,11 +16,11 @@ and the size of data I can save does not depend on how much I can pay
 each month. So far, I am very happy with this solution! Nextcloud is
 a great software and I really feel like I am the master of my own data.
 
-Now there is still one problem. What if my flat burns? or get robbed?
+Now there is still one problem. What if my flat burns? Or get robbed?
 My nice setup is defenceless against this kind of threat, I would simply
 lose everything. Another threat is data corruption, either by a wrong
 user action or a malware (ransomwares are more and more common nowadays!).
-RAID can prevent losing data because of a falty disk, but not because of
+RAID can prevent losing data because of a faulty disk, but not because of
 the reasons cited above.
 
 The obvious solution I see is to make backups in another place than my home.
@@ -35,8 +35,8 @@ Several pre-conditions are required:
 - having other places to store the backup. In my case I can install a server
   in my parent’s home for instance.
 - having a hardware to make backups. I found out that a Raspberry Pi does the 
-  job quite well for my Nextcloud server. But as backups servers do not need 
-  to host Nextcloud, and just regurlaly copy data into a hard drive, no need 
+  job quite well for my Nextcloud server. However, as backups servers do not
+  need to host Nextcloud and just regularly copy data to a hard drive, no need 
   for the best one. As for the hard drives, I don’t want to spend a lot of 
   money to haves disks in RAID like I did for the main server. They are just
   backups, a simple disk in the form of an external drive is enough.
@@ -54,13 +54,14 @@ ones! In short, I am using **rsync daemon mode over ssh**.
 backups of distant hosts. There are several ways to do so:
 
 - With a password and directly over SSH. Secured but manual.
-- With a public key and directly over SSH. Better for automation but whoever
-  has the private key of the backup server can mess with the main server.
-  (I am considering this possibility because my backup servers are away
-  from me and I am not in full control, they can be stolen for instance.)
-- Running rsync in daemon mode on the main server. Avoid the previous issue
-  and has nice options like read-only mode. But it opens a TCP port that has
-  filesystem access and is hard to secure.
+- With a public key and directly over SSH. Better for automation (if the key
+  does not have a passphrase) but whoever has the private key of the backup
+  server can mess with the main server. I am considering this possibility
+  because my backup servers are away from me and I am not in full control,
+  they can be stolen for instance.
+- Running rsync in daemon mode on the main server. It has nice options like
+  read-only mode. But it opens a TCP port that has filesystem access and is hard
+  to secure.
 
 The solution I am choosing is a combination of the previous ones: using rsync 
 daemon mode over SSH.
@@ -125,10 +126,13 @@ data files of all users of Nextcloud, including the database of Nextcloud.
 This allows the backup servers to save these directories into different
 locations and at different periods for instance.
 
-The daemon will be run from user `pi`. To give this user read access to
-Nextcloud files, `pi` has been added to the group `www-data`. In this way
-`pi` user cannot write anything in Nextcloud directories, even without the
-option `exclude`: double security!
+The daemon will be run from user `pi` (because the SSH connection is made with
+this user). To give this user read access to Nextcloud files, `pi` has been
+added to the group `www-data`. In this way `pi` user cannot write anything in
+Nextcloud directories, even without the option `read only`: double security!
+
+One could also create and use a dedicated user for the backup tasks, avoiding to
+use the very common user `pi` known by every malware…
 
 ### Configure the SSH connection
 
@@ -139,10 +143,16 @@ main server so that it can connect to it without giving a password.
 First, I need to generate a ssh key pair on the backup server:
 
 ```shell
-ssh-keygen -b 256 -t rsa -N my_passphrase -f ~/.ssh/id_rsa_nextcloud
+ssh-keygen -b 256 -t rsa -N "" -f ~/.ssh/id_rsa_nextcloud
 ```
 
 And copy the content of `~/.ssh/id_rsa_nextcloud.pub` for the next step.
+
+Note that I do not use a passphrase for this key (option `-N`), as I need it to
+be used automatically by a routine task, without a passphrase prompt. Because of
+that the key-pair is stored in plain-text and therefore can be used directly if
+stolen. But our safeguard is to restrict the powers of this key to the very
+minimum: read my data.
 
 On the main server containing Nextcloud, I add this public key to the list
 of authorized keys with a **forced command**. A forced command ensures that
@@ -208,7 +218,7 @@ is well-suited in this case.
 First, user `pi` must not be in `/etc/cron.deny` and must be in `/etc/cron.allow`.
 
 Then, the crontab must be edited with the command `crontab -e`. I am creating a
-job that will run a custom script every monday at 1 A.M.
+job that will run a custom script every Monday at 1 A.M.
 
 ```
 00 01 * * mon pi do_cloud_backup.sh >> backup_cron.log
@@ -223,6 +233,10 @@ rsync -a -v --delete -e "ssh -i ~/.ssh/id_rsa_nextcloud" pi@main_server_address:
 rsync -a -v --delete -e "ssh -i ~/.ssh/id_rsa_nextcloud" pi@main_server_address::nextcloud_data backup/nextcloud_data
 ```
 
+## In case of...
+
+### Ransomwares
+
 This is a good place to talk about the threat of **ransomwares**. In case my data
 becomes encrypted on the main server because of such a malware, my backup server
 would copy these encrypted files and I would lose my data anyway! I am not an 
@@ -234,11 +248,23 @@ instance create a new `rsync` module that copies only this dummy file. If this
 file has a correct content I can assume that the rest of my data has not been
 corrupted, and synchronize the other modules.
 
-## In case of...
+### Stealing of the backup SSH key
+
+If someone can compromise one of my backup servers:
+- He can access my backuped data. But it cannot have any impact on the original
+  data on the main server, even if he overwrites the backup.
+- He has the private key. Again, as the connection is limited, he can only read
+  data on the main server. But another threat is DDOS, bandwidth flooding, by
+  repeatedly executing the backup command. To counter that, I set a safeguard
+  on the main server to prevent this kind of behaviour by limiting the
+  connection rate.
+
+If one does not want his data to be read at all, the solution is to make
+NextCloud encrypt all data in the first place.
 
 ### Loss of the backup server
 
-No need to worry, my mainserver is still on tracks and I did not lose anything.
+No need to worry, my main server is still on tracks and I did not lose anything.
 I just need to replace/fix the broken/stolen/burnt backup server with a new
 one.
 
@@ -258,4 +284,10 @@ easily rescan a whole data directory and run like nothing happened.
 I can multiply the number of backup servers simply by adding each new public 
 key to the list of authorized keys on the main server. There can’t be any
 conflict between them, and each new backup will be an additional safe copy.
+
+## References
+
+- The [rsync man page](https://linux.die.net/man/1/rsync).
+- A nice Gist: [trendels/rsync_daemon_over_ssh.md](https://gist.github.com/trendels/6582e95012f6c7fc6542).
+- [This StackExchange question](https://unix.stackexchange.com/q/26182/361518).
 
