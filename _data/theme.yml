@@ -1,0 +1,30 @@
+# Theme customization - please change from the defaults!
+
+# Color for top bar, links, etc
+highlight_color: '#db3445' #'#3498db'
+
+# Profile links on the left sidebar, leave blank to ignore
+social:
+  github: romaintt
+  #bitbucket:
+  # hacker_news:
+  #stackexchange:
+  stackoverflow: 5152114
+  # twitter:
+  #facebook:
+  #tumblr:
+  linkedin: romaintaprest
+  #gplus:
+  #gravatar:
+  #flickr:
+
+# "Hi, I'm _______"
+name: Romain Taprest
+email: romain@taprest.fr
+tagline: ""
+
+# Toggle "Postings are my own" disclaimer in footer
+show_disclaimer: false
+
+# Toggle link/icon to view atom feed (/atom.xml) in sidebar
+show_atom_feed: true

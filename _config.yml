@@ -1,0 +1,12 @@
+# Site metadata
+title: Blog of Romain Taprest
+description: The personal blog of Romain Taprest
+url: romain.taprest.fr
+
+# General Jekyll Config
+highlighter: rouge
+lsi: false
+exclude: [LICENSE, CNAME, README.md, .gitignore, Gemfile, Gemfile.lock, vendor]
+permalink: /posts/:categories/:title
+plugins:
+  - jekyll-sitemap
