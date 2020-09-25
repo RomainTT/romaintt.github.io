@@ -188,6 +188,10 @@ pre {
   overflow-x: auto;
 }
 
+pre code {
+  overflow-x: auto;
+}
+
 /* Style of main content block */
 .content {
   border-left: 1px solid #DDD;
