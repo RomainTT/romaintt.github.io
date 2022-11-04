@@ -10,9 +10,8 @@
   <meta property="og:description" content="{{ site.description }}" />
 {% endif %}
 
-{% if site.url %}
-  <link rel="canonical" href="{{ site.url }}" />
-  <meta property="og:url" content="{{ site.url }}" />
+{% if site.url and page.url %}
+  <meta property="og:url" content="{{ site.url }}{{ page.url | replace:'index.html','' }}" />
 {% endif %}
 
 {% if site.main_language %}
