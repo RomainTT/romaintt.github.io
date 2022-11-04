@@ -1,7 +1,7 @@
 # Site metadata
 title: Blog of Romain Taprest
 description: The personal blog of Romain Taprest
-url: romain.taprest.fr
+url: https://romain.taprest.fr
 
 # General Jekyll Config
 highlighter: rouge
